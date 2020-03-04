@@ -105,6 +105,55 @@ class _ClientScreenState extends State<ClientScreen> {
               Tab(text: 'Histórico'),
             ],
           ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: (){
+                showDialog(
+                  context: this.context,
+                  builder: (BuildContext context){
+                    return AlertDialog(
+                        title: Text('Defina o atendimento'),
+                        content: SizedBox(
+                            height: 100,
+                            child: Column(
+                              children: <Widget>[
+                                Text('Data da cirurgia:'),
+                                TextField(
+                                    onSubmitted: (s){
+                                      Navigator.of(this.context).pop();
+                                    },
+                                  )
+                                ],
+                              ),
+                          ),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('Implante'),
+                            onPressed: () {
+                              GrupoDAO grupo = GrupoDAO(1, '10', 'Implantes');
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => CategoryScreen(grupo))
+                              );
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('Prótese'),
+                            onPressed: () {
+                              GrupoDAO grupo = GrupoDAO(2, '10', 'Prótese');
+                              Navigator.of(context).push(
+                                MaterialPageRoute(builder: (context) => CategoryScreen(grupo))
+                              );
+                            },
+                          )
+                        ],
+                    );
+                  }
+                );
+              },
+              textColor: Colors.white,
+              child: Text('Realizar Atendimento'),
+            )
+          ],
         ),
         
         body: TabBarView(
@@ -287,103 +336,20 @@ class _ClientScreenState extends State<ClientScreen> {
             ListView(
               padding: EdgeInsets.all(20),
               children: <Widget>[
-                Text(produto.tipoProduto.toUpperCase() == 'IMPLANTE' ? "${produto.tipoProduto} utilizado(a):" : '- utilizado(a)'),
-                Text(
-                  "${produto.descricao}",
-                  style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
-                ),
-          
-                SizedBox(height: 30,),
-
-                Text("Tipo:", style: TextStyle(fontWeight: FontWeight.bold),),
-                SizedBox(
-                  height: 60,
-                  child: GridView(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      mainAxisSpacing: 8.0,
-                      childAspectRatio: 0.5
-                    ),
-                    children: produto.plataformas.map(
-                      (t){
-                        return GestureDetector(
-                            onTap: (){
-                              setState((){
-                                plataforma = t;
-                                UserModel.of(context).pacienteAtual.plataforma = t;
-                              });
-                              if (t == 'Outros'){
-                                showDialog(
-                                  context: this.context,
-                                  builder: (BuildContext context){
-                                    return AlertDialog(
-                                        title: Text('Especifique'),
-                                        content: TextField(
-                                          controller: outrosPlatControl,
-                                          onSubmitted: (s){
-                                              Navigator.of(this.context).pop();
-                                          },
-                                        ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            child: Text('Ok'),
-                                            onPressed: () {
-                                              Navigator.of(this.context).pop();
-                                            },
-                                          )
-                                        ],
-                                    );
-                                  }
-                                );
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
-                                border: Border.all(
-                                  color: plataforma == t ? Theme.of(context).primaryColor : Colors.grey,
-                                  width: 3.0
-                                )
-                              ),
-                              width: 150,
-                              alignment: Alignment.center,
-                              child: Text(
-                                t,
-                                style: TextStyle(color: plataforma == t ? Theme.of(context).primaryColor : Colors.black),
-                              ),
-                            ),
-                          );
-                      }).toList()
+                Text(produto.tipoProduto.toUpperCase() == 'IMPLANTE' ? "${produto.tipoProduto}s utilizados:" : '- utilizado(a)'),
+                ListTile(
+                  leading: CircleAvatar(
+                      radius: 25.0,
+                      backgroundColor: Colors.transparent,
+                      child: Icon(Icons.assignment, size: 25.0,),
                   ),
-                ),
-                
-                SizedBox(height: 30,),
-
-                SizedBox(
-                  height: 44.0,
-                  child: RaisedButton(
-                    onPressed: plataforma.isEmpty ? null : (){
-                      if(produto.tipoProduto == '-'){
-                        GrupoDAO grupo = GrupoDAO(1, '10', 'Implantes');
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => CategoryScreen(grupo))
-                        );
-                      }
-                      else {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => ProductScreen(produto, false))
-                        );
-                      }
-                    },
-                    child: Text(
-                      produto.tipoProduto == '-' ? 'Adicionar Provisório' : "Visualizar ${produto.descricao}", 
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                  ),
+                  title: Text("${produto.descricao}"),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: produto == null ? null : (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProductScreen(produto, false))
+                    );
+                  },
                 )
               ],
             ),
@@ -392,103 +358,20 @@ class _ClientScreenState extends State<ClientScreen> {
             ListView(
               padding: EdgeInsets.all(20),
               children: <Widget>[
-                Text(protese != null ? "${protese.tipoProduto} utilizado(a):" : '- utilizado(a)'),
-                Text(
-                  protese != null ? "${protese.descricao}" : 'Não Cadastrado',
-                  style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 30,),
-
-                Text("Tipo:", style: TextStyle(fontWeight: FontWeight.bold),),
-                SizedBox(
-                  height: 60,
-                  child: GridView(
-                    padding: EdgeInsets.symmetric(vertical: 4.0),
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      mainAxisSpacing: 8.0,
-                      childAspectRatio: 0.5
-                    ),
-                    children: produto.tipoProtese.map(
-                      (t){
-                        return GestureDetector(
-                            onTap: (){
-                              setState((){
-                                tipo = t;
-                                UserModel.of(context).pacienteAtual.tipo = t;
-                              });
-                              if (t == 'Outros'){
-                                showDialog(
-                                  context: this.context,
-                                  builder: (BuildContext context){
-                                    return AlertDialog(
-                                        title: Text('Especifique'),
-                                        content: TextField(
-                                          controller: outrosTipoControl,
-                                          onSubmitted: (s){
-                                              Navigator.of(this.context).pop();
-                                          },
-                                        ),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            child: Text('Ok'),
-                                            onPressed: () {
-                                              Navigator.of(this.context).pop();
-                                            },
-                                          )
-                                        ],
-                                    );
-                                  }
-                                );
-                              }
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(4)),
-                                border: Border.all(
-                                  color: tipo == t ? Theme.of(context).primaryColor : Colors.grey,
-                                  width: 3.0
-                                )
-                              ),
-                              width: 150,
-                              alignment: Alignment.center,
-                              child: Text(
-                                t,
-                                style: TextStyle(color: tipo == t ? Theme.of(context).primaryColor : Colors.black),
-                              ),
-                            ),
-                          );
-                      }).toList()
+                Text(protese != null ? "${protese.tipoProduto}s utilizadas:" : '- utilizado(a)'),
+                ListTile(
+                  leading: CircleAvatar(
+                      radius: 25.0,
+                      backgroundColor: Colors.transparent,
+                      child: Icon(Icons.assignment, size: 25.0,),
                   ),
-                ),
-          
-                SizedBox(height: 30,),
-
-                SizedBox(
-                  height: 44.0,
-                  child: RaisedButton(
-                    onPressed: tipo.isEmpty ? null : (){
-                      if(protese != null && protese.tipoProduto != '-'){
-                        bool lEdit = false;
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => ProductScreen(protese, lEdit))
-                        );
-                      }
-                      else {
-                        GrupoDAO grupo = GrupoDAO(2, '  10', 'Prótese');
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => CategoryScreen(grupo))
-                        );
-                      }
-                    },
-                    child: Text(
-                      protese != null && protese.tipoProduto != '-' ? "Visualizar ${protese.descricao}" : 'Adicionar Provisório', 
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                  ),
+                  title: Text("${protese.descricao}"),
+                  trailing: Icon(Icons.keyboard_arrow_right),
+                  onTap: protese == null || protese.tipoProduto == '-' ? null : (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProductScreen(protese, false))
+                    );
+                  },
                 )
               ],
             ),

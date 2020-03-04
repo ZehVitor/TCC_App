@@ -14,7 +14,8 @@ class ProductDAO {
   List<String> plataformas = ['Gran Morse', 'Cone Morse', 'HE', 'HI','Outros'];
   List<String> tpPlataformas = ['3.5X9mm', '3.5X10mm', '3.75X9mm', '3.75X10mm', '4.3X9mm', '4.3X10mm','Outros'];
   List<String> fabricantes = ['NeoDente', 'Strauman', 'DentoFlex', 'SIN', 'Singular', 'FGM','Conexão','Outros'];
-  List<String> dentes = ['18','17','16','15','14','13','12','11','21','22','23','24','25','26','27','28','48','47','46','45','44','43','42','41','31','32','33','34','35','36','37','38','Outros'];
+  List<String> dentes = ['18','17','16','15','14','13','12','11','21','22','23','24','25','26','27','28'];
+  List<String> dentes2 = ['48','47','46','45','44','43','42','41','31','32','33','34','35','36','37','38'];
   List<String> torques = ['10n','20n','32n','45n','60n','80n','Outros'];
   List<String> ancoragens = ['Boa','Ótima','Deficiente','Outros'];
   List<String> enxerto = ['Autógeno','Sintético','Xenógeno','Outros'];

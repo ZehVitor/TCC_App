@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:tcc_app/Components/CustomAlert.dart';
 import 'package:tcc_app/DAOs/FuncionarioDAO.dart';
 import 'package:tcc_app/Models/UserModel.dart';
+import 'package:tcc_app/Screens/AddUserScreen.dart';
 import 'package:tcc_app/Screens/homeScreen.dart';
 import 'package:tcc_app/UI/IconInput.dart';
 import 'package:local_auth/local_auth.dart';
@@ -47,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Center(
               child: Container(
                 width: 400,
-                height: 300,
+                height: 400,
                 
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -75,7 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     //     )
                     // ),
                     Text("Registro de informações em\nApp de Implantes Dentários", style: TextStyle(fontSize: 27, fontWeight: FontWeight.bold)),
-                    SizedBox(height: 30,),
+                    SizedBox(height: 20,),
                     IconInput(
                       Icon(Icons.person, color: Colors.blue),
                       'CRO',
@@ -94,56 +95,77 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Login button
                       child: ScopedModelDescendant<UserModel>(
                         builder: (context, child, model){
-                          return RaisedButton(
-                            onPressed: () async {   
-                                FuncionarioDAO user = FuncionarioDAO(10, 'Gilvani', loginControl.text, passControl.text, 'email@teste.com');
-                                if (_usesFingerPrint){
-                                  _checkBiometricSensor();
-                                  CustomAlert(
-                                    context: context,
-                                    title: 'Biometria',
-                                    msg: 'Autentique-se com a digital',
-                                  );
-                                }
-                                model.signIn(
-                                  user: user.toMap(),
+                          return Column(children: 
+                            <Widget>[
+                              RaisedButton(
+                                onPressed: () async {   
+                                    FuncionarioDAO user = FuncionarioDAO(10, 'Gilvani', loginControl.text, passControl.text, 'email@teste.com');
+                                    if (_usesFingerPrint){
+                                      _checkBiometricSensor();
+                                      CustomAlert(
+                                        context: context,
+                                        title: 'Biometria',
+                                        msg: 'Autentique-se com a digital',
+                                      );
+                                    }
+                                    model.signIn(
+                                      user: user.toMap(),
 
-                                  onSuccess: (){
-                                    Navigator.pushReplacement(context,
-                                      MaterialPageRoute(builder: (context) => HomeScreen())
-                                    );
-                                  },
+                                      onSuccess: (){
+                                        Navigator.pushReplacement(context,
+                                          MaterialPageRoute(builder: (context) => HomeScreen())
+                                        );
+                                      },
 
-                                  onFail: (){
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context){
-                                        return AlertDialog(
-                                            title: Text('Autenticação'),
-                                            content: Text('Usuário e/ou senha não encontrado.'),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: Text('Fechar'),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              )
-                                            ],
+                                      onFail: (){
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context){
+                                            return AlertDialog(
+                                                title: Text('Autenticação'),
+                                                content: Text('Usuário e/ou senha não encontrado.'),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Fechar'),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  )
+                                                ],
+                                            );
+                                          }
                                         );
                                       }
                                     );
-                                  }
-                                );
-                            },
-                            color: Colors.amberAccent,
-                            textColor: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                            child: Text(
-                              'Login',
-                              style: TextStyle(
-                                fontSize: 20.0
+                                },
+                                color: Colors.amberAccent,
+                                textColor: Colors.white,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                                child: Text(
+                                  'Login',
+                                  style: TextStyle(
+                                    fontSize: 20.0
+                                  ),
+                                ),
                               ),
-                            ),
+                              
+                              RaisedButton(
+                                onPressed: () async {   
+                                  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => AddUserScreen())
+                                  );
+                                },
+                                color: Colors.amberAccent,
+                                textColor: Colors.white,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                                child: Text(
+                                  'Cadastre-se',
+                                  style: TextStyle(
+                                    fontSize: 20.0
+                                  ),
+                                ),
+                              ),
+                            ],
                           );
                         }
                       )

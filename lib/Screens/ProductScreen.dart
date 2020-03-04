@@ -52,6 +52,12 @@ class _ProductScreenState extends State<ProductScreen> {
   final ancoragemOutControl  = TextEditingController();
   final oclusaoOutControl  = TextEditingController();
   final enxertoOutControl  = TextEditingController();
+  
+  final caracteristicaOutControl  = TextEditingController();
+  final coberturaOutControl  = TextEditingController();
+  final cargaOutControl  = TextEditingController();
+  final superficieOutControl  = TextEditingController();
+  final parafusoOutControl  = TextEditingController();
 
   _ProductScreenState(this.product, this.editable);
 
@@ -112,7 +118,79 @@ class _ProductScreenState extends State<ProductScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Text(
-                      'Fabricante',
+                      'Tipo', //vai ser tipo do implante
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      ),
+                      maxLines: 3,
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: GridView(
+                        padding: EdgeInsets.symmetric(vertical: 4.0),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 0.5
+                        ),
+                        children: product.plataformas.map(
+                          (t){
+                            return GestureDetector(
+                                onTap: (){
+                                  setState((){
+                                    plataforma = t;
+                                    UserModel.of(context).pacienteAtual.plataforma = t;
+                                  });
+                                  if (t == 'Outros'){
+                                    showDialog(
+                                      context: this.context,
+                                      builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title: Text('Especifique'),
+                                            content: TextField(
+                                              onSubmitted: (s){
+                                                  Navigator.of(this.context).pop();
+                                              },
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                                },
+                                              )
+                                            ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      color: plataforma == t ? Theme.of(context).primaryColor : Colors.grey,
+                                      width: 3.0
+                                    )
+                                  ),
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    t,
+                                    style: TextStyle(color: plataforma == t ? Theme.of(context).primaryColor : Colors.black),
+                                  ),
+                                ),
+                              );
+                          }).toList()
+                      ),
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    Text(
+                      'Fabricante:', //vai ser tipo do implante
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500
@@ -184,6 +262,219 @@ class _ProductScreenState extends State<ProductScreen> {
                     SizedBox(height: 20,),
 
                     Text(
+                      'Plataforma:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: GridView(
+                        padding: EdgeInsets.symmetric(vertical: 4.0),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 0.5
+                        ),
+                        children: product.tpPlataformas.map(
+                          (t){
+                            return GestureDetector(
+                                onTap: !editable ? null : (){
+                                  setState((){
+                                    tpPlataforma = t;
+                                  });
+                                  if (t == 'Outros'){
+                                    showDialog(
+                                      context: this.context,
+                                      builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title: Text('Especifique'),
+                                            content: TextField(
+                                              controller: tpPlataformaOutControl,
+                                              onSubmitted: (s){
+                                                  Navigator.of(this.context).pop();
+                                              },
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                                },
+                                              )
+                                            ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      color: tpPlataforma == t ? primaryColor : Colors.grey,
+                                      width: 3.0
+                                    )
+                                  ),
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    t,
+                                    style: TextStyle(color: tpPlataforma == t ? primaryColor : Colors.black),
+                                  ),
+                                ),
+                              );
+                          }).toList()
+                      ),
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    Text(
+                      'Superficie:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: GridView(
+                        padding: EdgeInsets.symmetric(vertical: 4.0),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 0.5
+                        ),
+                        children: product.superficie.map(
+                          (t){
+                            return GestureDetector(
+                                onTap: !editable ? null : (){
+                                  setState((){
+                                    superficie = t;
+                                  });
+                                  if (t == 'Outros'){
+                                    showDialog(
+                                      context: this.context,
+                                      builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title: Text('Especifique'),
+                                            content: TextField(
+                                              controller: superficieOutControl,
+                                              onSubmitted: (s){
+                                                  Navigator.of(this.context).pop();
+                                              },
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                                },
+                                              )
+                                            ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      color: superficie == t ? primaryColor : Colors.grey,
+                                      width: 3.0
+                                    )
+                                  ),
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    t,
+                                    style: TextStyle(color: superficie == t ? primaryColor : Colors.black),
+                                  ),
+                                ),
+                              );
+                          }).toList()
+                      ),
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    Text(
+                      'Característica:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: GridView(
+                        padding: EdgeInsets.symmetric(vertical: 4.0),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 0.5
+                        ),
+                        children: product.caracteristicas.map(
+                          (t){
+                            return GestureDetector(
+                                onTap: !editable ? null : (){
+                                  setState((){
+                                    caracteristica = t;
+                                  });
+                                  if (t == 'Outros'){
+                                    showDialog(
+                                      context: this.context,
+                                      builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title: Text('Especifique'),
+                                            content: TextField(
+                                              controller: caracteristicaOutControl,
+                                              onSubmitted: (s){
+                                                  Navigator.of(this.context).pop();
+                                              },
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                                },
+                                              )
+                                            ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      color: caracteristica == t ? primaryColor : Colors.grey,
+                                      width: 3.0
+                                    )
+                                  ),
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    t,
+                                    style: TextStyle(color: caracteristica == t ? primaryColor : Colors.black),
+                                  ),
+                                ),
+                              );
+                          }).toList()
+                      ),
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    Text(
                       'Região Implantada:',
                       style: TextStyle(
                         fontSize: 20,
@@ -201,6 +492,67 @@ class _ProductScreenState extends State<ProductScreen> {
                           childAspectRatio: 0.5
                         ),
                         children: product.dentes.map(
+                          (t){
+                            return GestureDetector(
+                                onTap: !editable ? null : (){
+                                  setState((){
+                                    regiao = t;
+                                  });
+                                  if (t == 'Outros'){
+                                    showDialog(
+                                      context: this.context,
+                                      builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title: Text('Especifique'),
+                                            content: TextField(
+                                              controller: regiaoOutControl,
+                                              onSubmitted: (s){
+                                                  Navigator.of(this.context).pop();
+                                              },
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                                },
+                                              )
+                                            ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      color: regiao == t ? primaryColor : Colors.grey,
+                                      width: 3.0
+                                    )
+                                  ),
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    t,
+                                    style: TextStyle(color: regiao == t ? primaryColor : Colors.black),
+                                  ),
+                                ),
+                              );
+                          }).toList()
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: GridView(
+                        padding: EdgeInsets.symmetric(vertical: 4.0),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 0.5
+                        ),
+                        children: product.dentes2.map(
                           (t){
                             return GestureDetector(
                                 onTap: !editable ? null : (){
@@ -374,8 +726,9 @@ class _ProductScreenState extends State<ProductScreen> {
                         Text('7mm'),
                       ]
                     ),
+
                     Text(
-                      'Sobre enxerto:',
+                      'Carga sobre Implante:',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w500
@@ -391,12 +744,12 @@ class _ProductScreenState extends State<ProductScreen> {
                           mainAxisSpacing: 8.0,
                           childAspectRatio: 0.5
                         ),
-                        children: product.enxerto.map(
+                        children: product.cargas.map(
                           (t){
                             return GestureDetector(
                                 onTap: !editable ? null : (){
                                   setState((){
-                                    enxerto = t;
+                                    carga = t;
                                   });
                                   if (t == 'Outros'){
                                     showDialog(
@@ -405,7 +758,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                         return AlertDialog(
                                             title: Text('Especifique'),
                                             content: TextField(
-                                              controller: enxertoOutControl,
+                                              controller: cargaOutControl,
                                               onSubmitted: (s){
                                                   Navigator.of(this.context).pop();
                                               },
@@ -427,7 +780,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.all(Radius.circular(4)),
                                     border: Border.all(
-                                      color: enxerto == t ? primaryColor : Colors.grey,
+                                      color: carga == t ? primaryColor : Colors.grey,
                                       width: 3.0
                                     )
                                   ),
@@ -435,13 +788,16 @@ class _ProductScreenState extends State<ProductScreen> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     t,
-                                    style: TextStyle(color: enxerto == t ? primaryColor : Colors.black),
+                                    style: TextStyle(color: carga == t ? primaryColor : Colors.black),
                                   ),
                                 ),
                               );
                           }).toList()
                       ),
                     ),
+
+                    SizedBox(height: 20,),
+
                     Text(
                       'Ancoragem primária:',
                       style: TextStyle(
@@ -510,6 +866,76 @@ class _ProductScreenState extends State<ProductScreen> {
                           }).toList()
                       ),
                     ),
+
+                    Text(
+                      'Sobre enxerto:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: GridView(
+                        padding: EdgeInsets.symmetric(vertical: 4.0),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 0.5
+                        ),
+                        children: product.enxerto.map(
+                          (t){
+                            return GestureDetector(
+                                onTap: !editable ? null : (){
+                                  setState((){
+                                    enxerto = t;
+                                  });
+                                  if (t == 'Outros'){
+                                    showDialog(
+                                      context: this.context,
+                                      builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title: Text('Especifique'),
+                                            content: TextField(
+                                              controller: enxertoOutControl,
+                                              onSubmitted: (s){
+                                                  Navigator.of(this.context).pop();
+                                              },
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                                },
+                                              )
+                                            ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      color: enxerto == t ? primaryColor : Colors.grey,
+                                      width: 3.0
+                                    )
+                                  ),
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    t,
+                                    style: TextStyle(color: enxerto == t ? primaryColor : Colors.black),
+                                  ),
+                                ),
+                              );
+                          }).toList()
+                      ),
+                    ),
+
                     SizedBox(height: 20,),
 
                     SizedBox(
@@ -542,16 +968,19 @@ class _ProductScreenState extends State<ProductScreen> {
                               paciente.regiao = regiao;
                               paciente.torque = torque;
                               paciente.ancoragem = ancoragem;
-                              paciente.oclusao = oclusao;
+                              paciente.tpPlataforma = tpPlataforma;
                               paciente.enxerto = enxerto;
                               paciente.altura = radioAltura;
+                              paciente.caracteristica = caracteristica;
+                              paciente.cobertura = cobertura;
+                              paciente.carga = carga;
+                              paciente.superficie = superficie;
                               paciente.historico += '${product.tipoProduto}:\n';
-                              paciente.historico += '-Plataforma: $plataforma - 4.3X9mm;\n';
+                              paciente.historico += '-Plataforma: $plataforma - $tpPlataforma;\n';
                               paciente.historico += '-Fabricante: $fabricante;\n';
                               paciente.historico += '-Torque: $torque;\n';
                               paciente.historico += '-Realizado sobre enxerto: $enxerto;\n';
                               paciente.historico += '-Data da cirurgia: ${product.dataFim};\n';
-                              // paciente.historico += '-Tipo do implante: $tipo;\n';
                               paciente.historico += '\n\n';
 
                               _scaffoldKey.currentState.showSnackBar(
@@ -613,6 +1042,77 @@ class _ProductScreenState extends State<ProductScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
+                    Text(
+                      'Tipo:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: GridView(
+                        padding: EdgeInsets.symmetric(vertical: 4.0),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 0.5
+                        ),
+                        children: product.tipoProtese.map(
+                          (t){
+                            return GestureDetector(
+                                onTap: (){
+                                  setState((){
+                                    tipo = t;
+                                    UserModel.of(context).pacienteAtual.tipo = t;
+                                  });
+                                  if (t == 'Outros'){
+                                    showDialog(
+                                      context: this.context,
+                                      builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title: Text('Especifique'),
+                                            content: TextField(
+                                              onSubmitted: (s){
+                                                  Navigator.of(this.context).pop();
+                                              },
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                                },
+                                              )
+                                            ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      color: tipo == t ? Theme.of(context).primaryColor : Colors.grey,
+                                      width: 3.0
+                                    )
+                                  ),
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    t,
+                                    style: TextStyle(color: tipo == t ? Theme.of(context).primaryColor : Colors.black),
+                                  ),
+                                ),
+                              );
+                          }).toList()
+                      ),
+                    ),
+
+                    SizedBox(height: 20,),
+
                     Text(
                       'Componente Protético:',
                       style: TextStyle(
@@ -681,6 +1181,80 @@ class _ProductScreenState extends State<ProductScreen> {
                           }).toList()
                       ),
                     ),
+
+                    SizedBox(height: 20,),
+
+                    Text(
+                      'Parafuso de Cobertura:',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: GridView(
+                        padding: EdgeInsets.symmetric(vertical: 4.0),
+                        scrollDirection: Axis.horizontal,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1,
+                          mainAxisSpacing: 8.0,
+                          childAspectRatio: 0.5
+                        ),
+                        children: product.parafuso.map(
+                          (t){
+                            return GestureDetector(
+                                onTap: !editable ? null : (){
+                                  setState((){
+                                    parafuso = t;
+                                  });
+                                  if (t == 'Outros'){
+                                    showDialog(
+                                      context: this.context,
+                                      builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title: Text('Especifique'),
+                                            content: TextField(
+                                              controller: parafusoOutControl,
+                                              onSubmitted: (s){
+                                                  Navigator.of(this.context).pop();
+                                              },
+                                            ),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                onPressed: () {
+                                                  Navigator.of(this.context).pop();
+                                                },
+                                              )
+                                            ],
+                                        );
+                                      }
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    border: Border.all(
+                                      color: parafuso == t ? primaryColor : Colors.grey,
+                                      width: 3.0
+                                    )
+                                  ),
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    t,
+                                    style: TextStyle(color: parafuso == t ? primaryColor : Colors.black),
+                                  ),
+                                ),
+                              );
+                          }).toList()
+                      ),
+                    ),
+                    
+                    SizedBox(height: 20,),
+
                     Text(
                       'Oclusão:',
                       style: TextStyle(
@@ -777,6 +1351,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
                               paciente.tipo = tipo;
                               paciente.conector = conector;
+                              paciente.oclusao = oclusao;
+                              paciente.parafuso = parafuso;
                               paciente.historico += '${product.tipoProduto}:\n';
                               paciente.historico += '-Data da cirurgia: ${product.dataFim};\n';
                               paciente.historico += '-Conector: $conector;\n';

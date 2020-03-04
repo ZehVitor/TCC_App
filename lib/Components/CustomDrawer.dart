@@ -85,9 +85,9 @@ class CustomDrawer extends StatelessWidget {
               Divider(),
 
               CustomTile(Icons.home, "Início", pageController, 0),
-              CustomTile(Icons.list, "Provisórios", pageController, 1),
+              CustomTile(Icons.list, "Consulta", pageController, 1),
               CustomTile(Icons.person_outline, "Pacientes", pageController, 2),
-              CustomTile(Icons.playlist_add_check, "Minhas Consultas", pageController, 3),
+              // CustomTile(Icons.playlist_add_check, "Minhas Consultas", pageController, 3),
             ],
           )
         ],

@@ -42,7 +42,7 @@ class ProductTile extends StatelessWidget {
                       children: <Widget>[
                         Text(product.descricao),
                         Text(
-                          "R\$ ${product.precoAtual.toStringAsFixed(2)}",
+                          "${product.tipoProduto}",
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.w500,
@@ -72,7 +72,7 @@ class ProductTile extends StatelessWidget {
                       children: <Widget>[
                         Text(product.descricao, style: TextStyle(fontWeight: FontWeight.w500),),
                         Text(
-                          "R\$ ${product.precoAtual.toStringAsFixed(2)}",
+                          "${product.tipoProduto}",
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.w500,

@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
         Scaffold(
           appBar: AppBar(
                     title: Text(
-                    'Provisórios',
+                    'Consulta',
                       style: TextStyle(
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,

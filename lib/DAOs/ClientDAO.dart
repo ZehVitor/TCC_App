@@ -31,6 +31,12 @@ class ClientDAO {
   String enxerto = '';
   String altura = '';
   
+  String caracteristica = '';
+  String cobertura = '';
+  String carga = '';
+  String superficie = '';
+  String parafuso = '';
+  
   String historico = '';
 
   ClientDAO(this.id, this.nome, this.fone, this.email);
